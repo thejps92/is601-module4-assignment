@@ -16,23 +16,19 @@ A simple command-line calculator implemented in Python. The application supports
 ## Project Structure
 
 ```
-.
-├── app/
-│   ├── __init__.py
-│   ├── calculator/
-│   │   ├── __init__.py
-│   └── operations/
-│       ├── __init__.py
-├── tests/
-│   ├── __init__.py
-│   ├── test_operations.py
-│   └── test_calculator.py
-├── main.py
-├── requirements.txt
-├── README.md
-└── .github/
-    └── workflows/
-        └── ci.yml
+app/
+├── __init__.py
+├── calculation/
+    └── __init__.py
+├── calculator/
+    └── __init__.py
+├── operations/
+    └── __init__.py
+tests/
+├── __init__.py
+├── test_calculation.py
+├── test_calculator.py
+└── test_operations.py
 ```
 
 ## Requirements
