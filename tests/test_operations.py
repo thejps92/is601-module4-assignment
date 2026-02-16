@@ -138,11 +138,36 @@ def test_division_with_zero_numerator():
     assert result == expected_result, f"Expected {a} / {b} to be {expected_result}, got {result}"
 
 
+def test_power_positive():
+    a = 2.0
+    b = 3.0
+    expected_result = 8.0
+    result = Operations.power(a, b)
+    assert result == expected_result, f"Expected {a} / {b} to be {expected_result}, got {result}"
+
+
+def test_power_negative():
+    a = -2.0
+    b = -1.0
+    expected_result = -0.5
+    result = Operations.power(a, b)
+    assert result == expected_result, f"Expected {a} / {b} to be {expected_result}, got {result}"
+
+
+def test_power_zero():
+    a = 2.0
+    b = 0.0
+    expected_result = 1.0
+    result = Operations.power(a, b)
+    assert result == expected_result, f"Expected {a} / {b} to be {expected_result}, got {result}"
+
+
 @pytest.mark.parametrize("calc_method, a, b, expected_exception", [
     (Operations.addition, '10', 5.0, TypeError),
     (Operations.subtraction, 10.0, '5', TypeError),
     (Operations.multiplication, '10', '5', TypeError),
     (Operations.division, 10.0, '5', TypeError),
+    (Operations.power, '2', 3.0, TypeError),
 ])
 def test_operations_invalid_input_types(calc_method, a, b, expected_exception):
     with pytest.raises(expected_exception):

@@ -7,6 +7,7 @@ from app.calculation import (
     SubtractCalculation,
     MultiplyCalculation,
     DivideCalculation,
+    PowerCalculation,
     Calculation
 )
 
@@ -112,6 +113,29 @@ def test_divide_calculation_execute_division_by_zero():
     assert str(exc_info.value) == "Cannot divide by zero."
 
 
+@patch.object(Operations, 'power')
+def test_power_calculation_execute_positive(mock_power):
+    a = 2.0
+    b = 3.0
+    expected_result = 8.0
+    mock_power.return_value = expected_result
+    power_calc = PowerCalculation(a, b)
+    result = power_calc.execute()
+    mock_power.assert_called_once_with(a, b)
+    assert result == expected_result
+
+
+@patch.object(Operations, 'power')
+def test_power_calculation_execute_negative(mock_power):
+    a = 2.0
+    b = 3.0
+    mock_power.side_effect = Exception("Power error")
+    power_calc = PowerCalculation(a, b)
+    with pytest.raises(Exception) as exc_info:
+        power_calc.execute()
+    assert str(exc_info.value) == "Power error"
+
+
 def test_factory_creates_add_calculation():
     a = 10.0
     b = 5.0
@@ -144,6 +168,15 @@ def test_factory_creates_divide_calculation():
     b = 5.0
     calc = CalculationFactory.create_calculation('divide', a, b)
     assert isinstance(calc, DivideCalculation)
+    assert calc.a == a
+    assert calc.b == b
+
+
+def test_factory_creates_power_calculation():
+    a = 2.0
+    b = 3.0
+    calc = CalculationFactory.create_calculation('power', a, b)
+    assert isinstance(calc, PowerCalculation)
     assert calc.a == a
     assert calc.b == b
 
@@ -206,6 +239,16 @@ def test_calculation_str_representation_division(mock_division):
     assert calc_str == expected_str
 
 
+@patch.object(Operations, 'power', return_value=8.0)
+def test_calculation_str_representation_power(mock_power):
+    a = 2.0
+    b = 3.0
+    power_calc = PowerCalculation(a, b)
+    calc_str = str(power_calc)
+    expected_str = f"{power_calc.__class__.__name__}: {a} Power {b} = 8.0"
+    assert calc_str == expected_str
+
+
 def test_calculation_repr_representation_subtraction():
     a = 10.0
     b = 5.0
@@ -229,13 +272,15 @@ def test_calculation_repr_representation_division():
     ('subtract', 10.0, 5.0, 5.0),
     ('multiply', 10.0, 5.0, 50.0),
     ('divide', 10.0, 5.0, 2.0),
+    ('power', 2.0, 3.0, 8.0),
 ])
 @patch.object(Operations, 'addition')
 @patch.object(Operations, 'subtraction')
 @patch.object(Operations, 'multiplication')
 @patch.object(Operations, 'division')
+@patch.object(Operations, 'power')
 def test_calculation_execute_parameterized(
-    mock_division, mock_multiplication, mock_subtraction, mock_addition,
+    mock_power, mock_division, mock_multiplication, mock_subtraction, mock_addition,
     calc_type, a, b, expected_result
 ):
     if calc_type == 'add':
@@ -246,6 +291,8 @@ def test_calculation_execute_parameterized(
         mock_multiplication.return_value = expected_result
     elif calc_type == 'divide':
         mock_division.return_value = expected_result
+    elif calc_type == 'power':
+        mock_power.return_value = expected_result
 
     calc = CalculationFactory.create_calculation(calc_type, a, b)
     result = calc.execute()
@@ -258,6 +305,8 @@ def test_calculation_execute_parameterized(
         mock_multiplication.assert_called_once_with(a, b)
     elif calc_type == 'divide':
         mock_division.assert_called_once_with(a, b)
+    elif calc_type == 'power':
+        mock_power.assert_called_once_with(a, b)
 
     assert result == expected_result
 
@@ -267,13 +316,15 @@ def test_calculation_execute_parameterized(
     ('subtract', 10.0, 5.0, "SubtractCalculation: 10.0 Subtract 5.0 = 5.0"),
     ('multiply', 10.0, 5.0, "MultiplyCalculation: 10.0 Multiply 5.0 = 50.0"),
     ('divide', 10.0, 5.0, "DivideCalculation: 10.0 Divide 5.0 = 2.0"),
+    ('power', 2.0, 3.0, "PowerCalculation: 2.0 Power 3.0 = 8.0"),
 ])
 @patch.object(Operations, 'addition', return_value=15.0)
 @patch.object(Operations, 'subtraction', return_value=5.0)
 @patch.object(Operations, 'multiplication', return_value=50.0)
 @patch.object(Operations, 'division', return_value=2.0)
+@patch.object(Operations, 'power', return_value=8.0)
 def test_calculation_str_parameterized(
-    mock_division, mock_multiplication, mock_subtraction, mock_addition,
+    mock_power, mock_division, mock_multiplication, mock_subtraction, mock_addition,
     calc_type, a, b, expected_str
 ):
     calc = CalculationFactory.create_calculation(calc_type, a, b)

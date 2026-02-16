@@ -10,6 +10,7 @@ A simple command-line calculator implemented in Python. The application supports
   * subtract
   * multiply
   * divide
+  * power
 * Input validation and error handling
 * Unit tests and parameterized tests for the calculator and operations
 

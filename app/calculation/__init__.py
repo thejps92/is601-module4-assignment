@@ -72,3 +72,9 @@ class DivideCalculation(Calculation):
         if self.b == 0:
             raise ZeroDivisionError("Cannot divide by zero.")
         return Operations.division(self.a, self.b)
+
+@CalculationFactory.register_calculation('power')
+class PowerCalculation(Calculation):
+
+    def execute(self) -> float:
+        return Operations.power(self.a, self.b)
