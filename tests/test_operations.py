@@ -1,105 +1,149 @@
 import pytest
 from app.operations import Operations
 
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (2, 3, 5),
-        (-1, 1, 0),
-        (0, 0, 0),
-        (2.5, 3.5, 6.0),
-        (-1.5, -2.5, -4.0),
-    ],
-    ids=[
-        "add_positive_integers",
-        "add_negative_integers",
-        "add_zero_integers",
-        "add_positive_floats",
-        "add_negative_floats"
-    ]
-)
-def test_addition(a, b, expected):
-    assert Operations.addition(a, b) == expected
+
+def test_addition_positive():
+    a = 10.0
+    b = 5.0
+    expected_result = 15.0
+    result = Operations.addition(a, b)
+    assert result == expected_result, f"Expected {a} + {b} to be {expected_result}, got {result}"
 
 
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (5, 3, 2),
-        (0, 1, -1),
-        (-2, -3, 1),
-        (2.5, 1.5, 1.0),
-        (-1.5, -0.5, -1.0),
-    ],
-    ids=[
-        "subtract_positive_integers",
-        "subtract_zero_integers",
-        "subtract_negative_integers",
-        "subtract_positive_floats",
-        "subtract_negative_floats"
-    ]
-)
-def test_subtraction(a, b, expected):
-    assert Operations.subtraction(a, b) == expected
+def test_addition_negative_numbers():
+    a = -10.0
+    b = -5.0
+    expected_result = -15.0
+    result = Operations.addition(a, b)
+    assert result == expected_result, f"Expected {a} + {b} to be {expected_result}, got {result}"
 
 
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (2, 3, 6),
-        (-1, 1, -1),
-        (0, 10, 0),
-        (1.5, 2.0, 3.0),
-        (-1.5, -2.0, 3.0),
-    ],
-    ids=[
-        "multiply_positive_integers",
-        "multiply_negative_integers",
-        "multiply_zero_integers",
-        "multiply_positive_floats",
-        "multiply_negative_floats"
-    ]
-)
-def test_multiplication(a, b, expected):
-    assert Operations.multiplication(a, b) == expected
+def test_addition_positive_negative():
+    a = 10.0
+    b = -5.0
+    expected_result = 5.0
+    result = Operations.addition(a, b)
+    assert result == expected_result, f"Expected {a} + ({b}) to be {expected_result}, got {result}"
 
 
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (6, 3, 2),
-        (-4, 2, -2),
-        (5.0, 2.5, 2.0),
-        (-3.0, -1.5, 2.0),
-    ],
-    ids=[
-        "divide_positive_integers",
-        "divide_negative_integers",
-        "divide_positive_floats",
-        "divide_negative_floats"
-    ]
-)
-def test_division(a, b, expected):
-    assert Operations.division(a, b) == expected
+def test_addition_with_zero():
+    a = 10.0
+    b = 0.0
+    expected_result = 10.0
+    result = Operations.addition(a, b)
+    assert result == expected_result, f"Expected {a} + {b} to be {expected_result}, got {result}"
 
 
-@pytest.mark.parametrize(
-    "a, b",
-    [
-        (1, 0),
-        (0, 0),
-        (-5, 0),
-        (3.5, 0),
-        (-2.0, 0),
-    ],
-    ids=[
-        "divide_by_zero_positive_integers",
-        "divide_by_zero_zero_integers",
-        "divide_by_zero_negative_integers",
-        "divide_by_zero_positive_floats",
-        "divide_by_zero_negative_floats"
-    ]
-)
-def test_division_by_zero(a, b):
-    with pytest.raises(ValueError):
+def test_subtraction_positive():
+    a = 10.0
+    b = 5.0
+    expected_result = 5.0
+    result = Operations.subtraction(a, b)
+    assert result == expected_result, f"Expected {a} - {b} to be {expected_result}, got {result}"
+
+
+def test_subtraction_negative_numbers():
+    a = -10.0
+    b = -5.0
+    expected_result = -5.0
+    result = Operations.subtraction(a, b)
+    assert result == expected_result, f"Expected {a} - ({b}) to be {expected_result}, got {result}"
+
+
+def test_subtraction_positive_negative():
+    a = 10.0
+    b = -5.0
+    expected_result = 15.0
+    result = Operations.subtraction(a, b)
+    assert result == expected_result, f"Expected {a} - ({b}) to be {expected_result}, got {result}"
+
+
+def test_subtraction_with_zero():
+    a = 10.0
+    b = 0.0
+    expected_result = 10.0
+    result = Operations.subtraction(a, b)
+    assert result == expected_result, f"Expected {a} - {b} to be {expected_result}, got {result}"
+
+
+def test_multiplication_positive():
+    a = 10.0
+    b = 5.0
+    expected_result = 50.0
+    result = Operations.multiplication(a, b)
+    assert result == expected_result, f"Expected {a} * {b} to be {expected_result}, got {result}"
+
+
+def test_multiplication_negative_numbers():
+    a = -10.0
+    b = -5.0
+    expected_result = 50.0
+    result = Operations.multiplication(a, b)
+    assert result == expected_result, f"Expected {a} * {b} to be {expected_result}, got {result}"
+
+
+def test_multiplication_positive_negative():
+    a = 10.0
+    b = -5.0
+    expected_result = -50.0
+    result = Operations.multiplication(a, b)
+    assert result == expected_result, f"Expected {a} * ({b}) to be {expected_result}, got {result}"
+
+
+def test_multiplication_with_zero():
+    a = 10.0
+    b = 0.0
+    expected_result = 0.0
+    result = Operations.multiplication(a, b)
+    assert result == expected_result, f"Expected {a} * {b} to be {expected_result}, got {result}"
+
+
+def test_division_positive():
+    a = 10.0
+    b = 5.0
+    expected_result = 2.0
+    result = Operations.division(a, b)
+    assert result == expected_result, f"Expected {a} / {b} to be {expected_result}, got {result}"
+
+
+def test_division_negative_numbers():
+    a = -10.0
+    b = -5.0
+    expected_result = 2.0
+    result = Operations.division(a, b)
+    assert result == expected_result, f"Expected {a} / {b} to be {expected_result}, got {result}"
+
+
+def test_division_positive_negative():
+    a = 10.0
+    b = -5.0
+    expected_result = -2.0
+    result = Operations.division(a, b)
+    assert result == expected_result, f"Expected {a} / ({b}) to be {expected_result}, got {result}"
+
+
+def test_division_with_zero_divisor():
+    a = 10.0
+    b = 0.0
+    with pytest.raises(ValueError) as exc_info:
         Operations.division(a, b)
+    assert str(exc_info.value) == "Cannot divide by zero."
+
+
+def test_division_with_zero_numerator():
+    a = 0.0
+    b = 5.0
+    expected_result = 0.0
+    result = Operations.division(a, b)
+    assert result == expected_result, f"Expected {a} / {b} to be {expected_result}, got {result}"
+
+
+@pytest.mark.parametrize("calc_method, a, b, expected_exception", [
+    (Operations.addition, '10', 5.0, TypeError),
+    (Operations.subtraction, 10.0, '5', TypeError),
+    (Operations.multiplication, '10', '5', TypeError),
+    (Operations.division, 10.0, '5', TypeError),
+])
+def test_operations_invalid_input_types(calc_method, a, b, expected_exception):
+    with pytest.raises(expected_exception):
+        calc_method(a, b)
